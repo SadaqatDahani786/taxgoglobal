@@ -1,0 +1,90 @@
+/*
+** **
+** ** ** Use A More Intuitive Box Model
+** **
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/*
+** **
+** ** ** Remove Default Margin
+** **
+*/
+* {
+  margin: 0;
+}
+
+/*
+** **
+** ** ** Allow Percentage Based Heights 
+** **
+*/
+html,
+body {
+  height: 100%;
+}
+
+/*
+** **
+** ** ** Accessible Line Height And Improve Text Rendering
+** **
+*/
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+** **
+** ** ** Improve Media Defaults
+** **
+*/
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  width: 100%;
+}
+
+/*
+** **
+** ** ** Remove Default Typography From Form Inputs
+** **
+*/
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/*
+** **
+** ** ** Avoid Text Overflows
+** **
+*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  overflow-wrap: break-word;
+}
+
+/*
+** **
+** ** ** Create A Seperate Context For Root Element
+** **
+*/
+#root {
+  isolation: isolate;
+}
