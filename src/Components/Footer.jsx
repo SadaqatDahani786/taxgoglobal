@@ -1,39 +1,42 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+
+//UI Components
+import Paragraph from "./Paragraph";
 
 /*
-** **
-** ** ** STYLED COMPONENTS
-** **
-*/
+ ** **
+ ** ** ** STYLED COMPONENTS
+ ** **
+ */
 //FooterStyled
 const FooterStyled = styled.footer`
-    min-height: 40vh;
-    background-color: var(--color-tertiary);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;    
-`
+  min-height: 5vh;
+  background-color: var(--color-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
-//Text
-const CopyrightText = styled.p`
-    width: 100%;
-    text-align: center;
-    background-color: var(--color-white);
-    font-size: 1.7rem;
-    padding: 20px 0;
-`
+//Copyright Text Wrapper
+const CopyrightTextWrapper = styled.div`
+  text-align: center;
+`;
 
 /*
-** **
-** ** ** COMPONENT [Footer]
-** **
-*/
-const Footer = ()=>{
-    return <FooterStyled>
-        <CopyrightText>
-            Taxgoglobal &copy; - All rights reserved.
-        </CopyrightText>
+ ** **
+ ** ** ** COMPONENT [Footer]
+ ** **
+ */
+const Footer = () => {
+  return (
+    <FooterStyled>
+      <CopyrightTextWrapper>
+        <Paragraph size="lead" color="tertiary">
+          &copy;IncomeTaxCalculator - All rights reserved.
+        </Paragraph>
+      </CopyrightTextWrapper>
     </FooterStyled>
-}
+  );
+};
 
 export default Footer;

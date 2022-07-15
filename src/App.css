@@ -1,15 +1,65 @@
-html{    
-    /*COLORS*/
-    --color-primary: #08C988;    
-    --color-secondary: #1cbca3;
-    --color-tertiary: #e0e0e0;
+:root {
+    /* COLORS*/
+    --color-primary: #392f5a;
+    --color-primary-alpha: #392f5a33;
+    --color-primary-dark: #16054b;
+  
+    --color-secondary: #f4d06f;
+    --color-secondary-alpha: #f4d16f86;
+    --color-secondary-dark: #fdb900;
+  
+    --color-tertiary: #fff8f0;
+    --color-tertiary-alpha: #fff8f088;
+    --color-tertiary-dark: #9dd9d2;
+    --color-tertiary-dark-alpha: #9dd9d27a;
+  
+    --color-success: #59a259;
+    --color-error: #f92626;
+    --color-info: #80bbd9;
+    --color-warn: rgb(230, 208, 32);
+  
+    --color-disabled: #d0d0d0;
+  
+    --color-black: rgb(0, 0, 0);
+    --color-transparent: transparent;
+  
+    /* SIZES */
+    --size-sm: 576;
+    --size-md: 768;
+    --size-lg: 992;
+    --size-xl: 1200;
+    --size-xxl: 1400;
+  
+  
+    /* SHADOWS */
+    --shadow-color: 60deg 2% 60%;
+    --shadow-elevation-low:
+      0.3px 0.3px 0.5px hsl(var(--shadow-color) / 0.28),
+      0.5px 0.5px 0.8px -1.1px hsl(var(--shadow-color) / 0.3),
+      1.1px 1.3px 2px -2.2px hsl(var(--shadow-color) / 0.33);
+    --shadow-elevation-medium:
+      0.3px 0.3px 0.5px hsl(var(--shadow-color) / 0.23),
+      0.8px 0.9px 1.4px -0.5px hsl(var(--shadow-color) / 0.25),
+      1.5px 1.7px 2.7px -1.1px hsl(var(--shadow-color) / 0.26),
+      3px 3.4px 5.3px -1.6px hsl(var(--shadow-color) / 0.27),
+      5.6px 6.4px 9.9px -2.2px hsl(var(--shadow-color) / 0.28);
+    --shadow-elevation-high:
+      0.3px 0.3px 0.5px hsl(var(--shadow-color) / 0.22),
+      1.4px 1.6px 2.5px -0.2px hsl(var(--shadow-color) / 0.22),
+      2.5px 2.9px 4.5px -0.5px hsl(var(--shadow-color) / 0.23),
+      3.8px 4.3px 6.7px -0.7px hsl(var(--shadow-color) / 0.23),
+      5.4px 6.1px 9.5px -1px hsl(var(--shadow-color) / 0.24),
+      7.6px 8.7px 13.5px -1.2px hsl(var(--shadow-color) / 0.25),
+      10.7px 12.1px 18.9px -1.5px hsl(var(--shadow-color) / 0.25),
+      14.8px 16.7px 26.1px -1.7px hsl(var(--shadow-color) / 0.26),
+      20.1px 22.8px 35.6px -2px hsl(var(--shadow-color) / 0.26),
+      27px 30.6px 47.7px -2.2px hsl(var(--shadow-color) / 0.27);
+  }
 
-    --color-black: #000;
-    --color-white: #fff;
-
+html{        
     /*BASE FONT SIZE*/
     font-size: 62.5%;
     
-    /*FONT FAMILTY*/
+    /*FONT FAMILY*/
     font-family: monospace, sans-serif;    
 }
