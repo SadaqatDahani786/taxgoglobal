@@ -1,9 +1,11 @@
 html{    
     /*COLORS*/
-    --color-primary: #08C988;
-    --color-secondary: rgb(247, 247, 247);
+    --color-primary: #08C988;    
+    --color-secondary: #1cbca3;
+    --color-tertiary: #e0e0e0;
 
     --color-black: #000;
+    --color-white: #fff;
 
     /*BASE FONT SIZE*/
     font-size: 62.5%;
