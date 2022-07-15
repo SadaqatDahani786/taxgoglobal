@@ -20,6 +20,7 @@ const Main = styled.main`
   max-width: 1200px;
   min-height: 83vh;
   margin: 0 auto;
+  padding: 40px 0;
 `
 
 /*

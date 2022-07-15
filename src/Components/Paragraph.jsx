@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 //ParagraphStyled
 const ParagraphStyled = styled.p`
-  font-size: ${({ size }) => (size === "lead" ? "1.8rem" : "1.6rem")};
+  font-size: ${({ size }) => (size === "lead" ? "1.6rem" : "1.4rem")};
   color: var(
     ${({ color }) =>
       (color === "primary" && "--color-primary") ||

@@ -7,7 +7,7 @@ import styled from "styled-components";
  */
 //Display 1
 const Display1 = styled.h1`
-  font-size: 3.4rem;
+  font-size: 2.4rem;
   color: var(
     ${({ color }) =>
       (color === "primary" && "--color-primary") ||
@@ -18,7 +18,7 @@ const Display1 = styled.h1`
 
 //Display 2
 const Display2 = styled.h2`
-  font-size: 2.7rem;
+  font-size: 2rem;
   color: var(
     ${({ color }) =>
       (color === "primary" && "--color-primary") ||
@@ -29,7 +29,7 @@ const Display2 = styled.h2`
 
 //Display 3
 const Display3 = styled.h3`
-  font-size: 2.6rem;
+  font-size: 1.8rem;
   color: var(
     ${({ color }) =>
       (color === "primary" && "--color-primary") ||
