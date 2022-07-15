@@ -1,4 +1,13 @@
-html{
-    /*Base font size = 62.5% of default 16px*/
+html{    
+    /*COLORS*/
+    --color-primary: #08C988;
+    --color-secondary: rgb(247, 247, 247);
+
+    --color-black: #000;
+
+    /*BASE FONT SIZE*/
     font-size: 62.5%;
+    
+    /*FONT FAMILTY*/
+    font-family: monospace, sans-serif;    
 }

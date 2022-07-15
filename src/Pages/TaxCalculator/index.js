@@ -1,4 +1,4 @@
-const TaxCalculator = ({})=>{
+const TaxCalculator = ()=>{
     return <h1>Tax calculator</h1>
 }
 
