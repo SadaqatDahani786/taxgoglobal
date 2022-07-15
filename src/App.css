@@ -1,1 +1,4 @@
-
+html{
+    /*Base font size = 62.5% of default 16px*/
+    font-size: 62.5%;
+}
