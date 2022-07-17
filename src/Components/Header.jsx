@@ -11,7 +11,7 @@ import Heading from "../Components/Heading";
 //HeaderStyled
 const HeaderStyled = styled.header`
   width: 100%;
-  height: 12vh;
+  min-height: 12vh;
   background-color: var(--color-primary);
   text-align: center;
 `;

@@ -1,14 +1,20 @@
-import Input from "../../Components/Input";
 import styled from "styled-components";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 //UI Components
 import Paragrah from "../../Components/Paragraph";
 import Button from "../../Components/Button";
+import Input from "../../Components/Input";
+import Results from "../../Components/Results";
+import Alert from "../../Components/Alert";
 
 //Hooks & Functions
 import useInput from "../../Hooks/useInput";
+import useFetch from "../../Hooks/useFetch";
+import { calculateTaxUS } from "../../API/api";
 import { isEmpty, createValidator, IsDecimal } from "../../Helpers/validation";
-import { useRef } from "react";
+import { getCountriesList } from "../../Helpers/utils";
 
 /*
  ** **
@@ -31,6 +37,21 @@ const ButtonWrapper = styled.div``;
  ** **
  */
 const TaxCalculator = () => {
+  //State
+  const [showAlertError, setShowAlertError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const countries = getCountriesList();
+  const [country, setCountry] = useState({});
+  const Params = useParams();
+  const Navigate = useNavigate();
+
+  useEffect(() => {
+    const ind = countries.findIndex((curr) => curr.path === Params.country);
+    if (ind === -1) Navigate("/404");
+
+    setCountry(countries[ind]);
+  }, [Navigate, countries, Params]);
+
   //Refs
   const refGrossIncome = useRef(null);
 
@@ -49,6 +70,11 @@ const TaxCalculator = () => {
     ])
   );
 
+  //API
+  const [fetchCalcTaxUS, calculatedTaxUs, calcTaxUSLoading] = useFetch(
+    calculateTaxUS(grossIncome.value)
+  );
+
   //Calculate Tax Handler
   const clickCalculateTaxHandler = (e) => {
     e.preventDefault();
@@ -61,13 +87,31 @@ const TaxCalculator = () => {
       return refGrossIncome.current.focus();
 
     //All Ok
-    alert("Tax Calulating");
+    fetchCalcTaxUS(
+      null,
+      (res) => {
+        console.log(res);
+        setErrorMessage("");
+        setShowAlertError(false);
+      },
+      (err) => {
+        setErrorMessage(err.message);
+        setShowAlertError(true);
+      }
+    );
   };
 
   return (
     <Wrapper>
+      <Alert
+        severety={"error"}
+        open={showAlertError}
+        title={"Error!"}
+        message={errorMessage}
+        onClose={() => setShowAlertError(false)}
+      />
       <Paragrah size="lead" color="primary">
-        Enter your amount in ($)
+        Enter your amount in ({country?.currency?.symbol})
       </Paragrah>
       <Input
         onChange={grossIncome.onChangeHandler}
@@ -83,6 +127,7 @@ const TaxCalculator = () => {
       />
       <ButtonWrapper>
         <Button
+          loading={calcTaxUSLoading}
           onClick={clickCalculateTaxHandler}
           size="medium"
           color="primary"
@@ -91,6 +136,12 @@ const TaxCalculator = () => {
           Calculate Tax
         </Button>
       </ButtonWrapper>
+
+      {!showAlertError && calculatedTaxUs?.taxInfo ? (
+        <Results taxInfo={calculatedTaxUs?.taxInfo} />
+      ) : (
+        ""
+      )}
     </Wrapper>
   );
 };
