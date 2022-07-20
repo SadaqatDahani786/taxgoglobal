@@ -1,5 +1,10 @@
 import styled from "styled-components";
 
+/*
+ ** **
+ ** ** ** STYLED COMPONENTS
+ ** **
+ */
 //ParagraphStyled
 const ParagraphStyled = styled.p`
   font-size: ${({ size }) => (size === "lead" ? "1.6rem" : "1.4rem")};
@@ -11,7 +16,11 @@ const ParagraphStyled = styled.p`
   );
 `;
 
-//Paragraph
+/*
+ ** **
+ ** ** ** COMPONENT [Paragraph]
+ ** **
+ */
 const Paragraph = ({ color, size, children }) => {
   return (
     <ParagraphStyled size={size} color={color}>

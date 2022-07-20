@@ -2,18 +2,11 @@ const API_ENDPOINT = "http://localhost:5000/api/v1";
 
 /**
  ** ====================================
- ** CALCULATE TAX US
+ ** CALCULATE TAX
  ** ====================================
  */
-export function calculateTaxUS(income) {
-  return { url: `${API_ENDPOINT}/calculate-tax/us?income=${income}` };
-}
-
-/**
- ** ====================================
- ** CALCULATE TAX UK
- ** ====================================
- */
-export function calculateTaxUK(income) {
-  return { url: `${API_ENDPOINT}/calculate-tax/uk?income=${income}` };
+export function calculateTax(country, income, taxYear, filingStatus, age) {
+  return {
+    url: `${API_ENDPOINT}/calculate-tax/${country}?income=${income}&tax-year=${taxYear}&filing-status=${filingStatus}&age=${age}`,
+  };
 }

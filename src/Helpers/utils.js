@@ -1,12 +1,12 @@
 export function getCountriesList() {
   const countries = [
     {
-      country: "USA",
-      path: "us",
+      country: "Ireland",
+      path: "ireland",
       currency: {
-        name: "USD",
-        type: "dollar",
-        symbol: "$",
+        name: "EUR",
+        type: "euro",
+        symbol: "€",
       },
     },
     {

@@ -45,11 +45,7 @@ const useFetch = ({ url, options }) => {
       } catch (err) {
         //Error status and callback
         setError(true);
-        onError(
-          new Error(
-            "Connection to server failed, it seems the server is down. Please try again later."
-          )
-        );
+        onError(err);
       } finally {
         //Loading status
         setLoading(false);

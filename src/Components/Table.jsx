@@ -1,5 +1,10 @@
 import styled from "styled-components";
 
+/*
+ ** **
+ ** ** ** STYLED COMPONENTS
+ ** **
+ */
 //Wrapper
 const Wrapper = styled.div`
   width: 100%;
@@ -65,6 +70,11 @@ const Td = styled.td`
   );
 `;
 
+/*
+ ** **
+ ** ** ** COMPONENT [Table]
+ ** **
+ */
 const Table = ({ color = "primary", rows = [], cols = [] }) => {
   return (
     <Wrapper>

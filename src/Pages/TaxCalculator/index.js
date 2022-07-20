@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams, Link } from "react-router-dom";
 
 //UI Components
 import Paragrah from "../../Components/Paragraph";
@@ -8,12 +8,19 @@ import Button from "../../Components/Button";
 import Input from "../../Components/Input";
 import Results from "../../Components/Results";
 import Alert from "../../Components/Alert";
+import Combobox from "../../Components/Combobox";
 
 //Hooks & Functions
 import useInput from "../../Hooks/useInput";
 import useFetch from "../../Hooks/useFetch";
-import { calculateTaxUS } from "../../API/api";
-import { isEmpty, createValidator, IsDecimal } from "../../Helpers/validation";
+import { calculateTax } from "../../API/api";
+import {
+  isEmpty,
+  createValidator,
+  IsDecimal,
+  isNumber,
+  isMax,
+} from "../../Helpers/validation";
 import { getCountriesList } from "../../Helpers/utils";
 
 /*
@@ -21,6 +28,7 @@ import { getCountriesList } from "../../Helpers/utils";
  ** ** ** STYLED COMPONENTS
  ** **
  */
+//Wrapper
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
@@ -31,6 +39,14 @@ const Wrapper = styled.div`
 //Button Wrapper
 const ButtonWrapper = styled.div``;
 
+//AnchorLink
+const AnchorLink = styled(Link)`
+  align-self: flex-end;
+  font-size: 1.6rem;
+  text-decoration: none;
+  color: var(--color-primary);
+`;
+
 /*
  ** **
  ** ** ** COMPONENT [TaxCalculator]
@@ -38,6 +54,8 @@ const ButtonWrapper = styled.div``;
  */
 const TaxCalculator = () => {
   //State
+  const [selectedTaxYear, setSelectedTaxYear] = useState("2022/23");
+  const [selectedFilingStatus, setSelectedFilingStatus] = useState("Single");
   const [showAlertError, setShowAlertError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const countries = getCountriesList();
@@ -45,6 +63,7 @@ const TaxCalculator = () => {
   const Params = useParams();
   const Navigate = useNavigate();
 
+  //If wrongo parameter, redirect to 404 page
   useEffect(() => {
     const ind = countries.findIndex((curr) => curr.path === Params.country);
     if (ind === -1) Navigate("/404");
@@ -54,6 +73,7 @@ const TaxCalculator = () => {
 
   //Refs
   const refGrossIncome = useRef(null);
+  const refAge = useRef(null);
 
   //Form Input
   const grossIncome = useInput(
@@ -69,10 +89,36 @@ const TaxCalculator = () => {
       },
     ])
   );
+  const age = useInput(
+    "",
+    createValidator([
+      {
+        validator: isEmpty,
+        message: "Please enter your age.",
+      },
+      {
+        validator: isNumber,
+        message: "Please enter a valid number for your age.",
+      },
+      {
+        validator: isMax,
+        options: {
+          max: 122,
+        },
+        message: "Please enter a age between (1-122).",
+      },
+    ])
+  );
 
   //API
-  const [fetchCalcTaxUS, calculatedTaxUs, calcTaxUSLoading] = useFetch(
-    calculateTaxUS(grossIncome.value)
+  const [fetchCalcTax, calculatedTax, calcTaxLoading] = useFetch(
+    calculateTax(
+      country.path,
+      grossIncome.value,
+      selectedTaxYear,
+      selectedFilingStatus,
+      age.value
+    )
   );
 
   //Calculate Tax Handler
@@ -81,16 +127,21 @@ const TaxCalculator = () => {
 
     //Trigger Validation
     grossIncome.validation.validate();
+    age.validation.validate();
 
     //Check For Errors
     if (!grossIncome.validation.touched || grossIncome.validation.error)
       return refGrossIncome.current.focus();
+    else if (
+      country.country === "Ireland" &&
+      (!age.validation.touched || age.validation.error)
+    )
+      return refAge.current.focus();
 
     //All Ok
-    fetchCalcTaxUS(
+    fetchCalcTax(
       null,
       (res) => {
-        console.log(res);
         setErrorMessage("");
         setShowAlertError(false);
       },
@@ -110,6 +161,7 @@ const TaxCalculator = () => {
         message={errorMessage}
         onClose={() => setShowAlertError(false)}
       />
+      <AnchorLink to="/">Select Different Country?</AnchorLink>
       <Paragrah size="lead" color="primary">
         Enter your amount in ({country?.currency?.symbol})
       </Paragrah>
@@ -121,13 +173,46 @@ const TaxCalculator = () => {
         helpertext={grossIncome.validation.message}
         name="grossIncome"
         ref={refGrossIncome}
-        label="Gross Income"
+        label="Annual Gross Income"
         size="medium"
         color="primary"
       />
+      {country.country === "Ireland" && (
+        <React.Fragment>
+          <Paragrah size="lead" color="primary">
+            How old are you?
+          </Paragrah>
+          <Input
+            onChange={age.onChangeHandler}
+            onBlur={age.onBlurHandler}
+            value={age.value}
+            error={age.validation.error}
+            helpertext={age.validation.message}
+            name="age"
+            ref={refAge}
+            label="Age"
+            size="medium"
+            color="primary"
+          />
+        </React.Fragment>
+      )}
+      <Combobox
+        size="large"
+        label={"Tax Year"}
+        items={["2022/23", "2021/22", "2020/21", "2019/20", "2018/19"]}
+        onChange={(e) => setSelectedTaxYear(e.target.value)}
+      />
+      {country.country === "Ireland" && (
+        <Combobox
+          size="large"
+          label={"Filing Status"}
+          items={["Single", "Married - One Income", "One Parent Family"]}
+          onChange={(e) => setSelectedFilingStatus(e.target.value)}
+        />
+      )}
       <ButtonWrapper>
         <Button
-          loading={calcTaxUSLoading}
+          loading={calcTaxLoading}
           onClick={clickCalculateTaxHandler}
           size="medium"
           color="primary"
@@ -137,8 +222,8 @@ const TaxCalculator = () => {
         </Button>
       </ButtonWrapper>
 
-      {!showAlertError && calculatedTaxUs?.taxInfo ? (
-        <Results taxInfo={calculatedTaxUs?.taxInfo} />
+      {!showAlertError && calculatedTax?.taxInfo ? (
+        <Results taxInfo={calculatedTax?.taxInfo} country={country} />
       ) : (
         ""
       )}

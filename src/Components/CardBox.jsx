@@ -4,6 +4,11 @@ import { Link } from "react-router-dom";
 //UI Components
 import Heading from "../Components/Heading";
 
+/*
+ ** **
+ ** ** ** STYLED COMPONENTS
+ ** **
+ */
 //Card Box Styled
 const CardBoxStyled = styled.div`
   width: 20rem;
@@ -14,6 +19,11 @@ const CardBoxStyled = styled.div`
   align-items: center;
 `;
 
+/*
+ ** **
+ ** ** ** COMPONENT [CardBox]
+ ** **
+ */
 const CardBox = ({ text, img, path }) => {
   return (
     <CardBoxStyled>

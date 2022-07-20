@@ -1,6 +1,12 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 
+/*
+ ** **
+ ** ** ** STYLED COMPONENTS
+ ** **
+ */
+//Alert
 const AlertStyled = styled.div`
   width: 100%;
   padding: 0.5rem 1rem;
@@ -77,6 +83,11 @@ const FloatButton = styled.div`
   cursor: pointer;
 `;
 
+/*
+ ** **
+ ** ** ** COMPONENT [Alert]
+ ** **
+ */
 const Alert = React.forwardRef(
   ({ open = false, title, message, severety = "info", onClose }, ref) => {
     const [stateAlert, setStateAlert] = useState(open);
