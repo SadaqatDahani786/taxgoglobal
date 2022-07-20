@@ -113,7 +113,7 @@ const TaxCalculator = () => {
         options: {
           max: 122,
         },
-        message: "Please enter a age between (1-122).",
+        message: "Please enter an age between (18-100).",
       },
     ])
   );

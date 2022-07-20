@@ -19,6 +19,8 @@ const ResultsStyled = styled.div`
   display: flex;
   flex-direction: column;
   gap: 25px;
+  border: 1px solid var(--color-primary-alpha);
+  box-shadow: var(--shadow-elevation-medium);
 `;
 
 //Span
@@ -52,7 +54,7 @@ const Results = ({ taxInfo, country }) => {
     <ResultsStyled>
       <Heading level={3}>Results (Monthly)</Heading>
       <Paragraph color="primary">
-        <Span>Gross Income:</Span>{" "}
+        <Span>Gross Income:</Span>
         {taxInfo.currency + parseFloat(taxInfo.income / 12).toFixed(2)}
       </Paragraph>
       <Paragraph color="primary">
@@ -67,6 +69,12 @@ const Results = ({ taxInfo, country }) => {
         </Span>
         {taxInfo.currency + parseFloat(taxInfo.ncc?.totalTax / 12).toFixed(2)}
       </Paragraph>
+      {country.country === "Ireland" && (
+        <Paragraph color="primary">
+          <Span>Pay-Related Social Insurance (PRSI):</Span>
+          {taxInfo.currency + parseFloat(taxInfo.prsi / 12).toFixed(2)}
+        </Paragraph>
+      )}
       {country.country === "UK" && (
         <Paragraph color="primary">
           <Span>Health And Social Care Levies:</Span>
@@ -88,10 +96,16 @@ const Results = ({ taxInfo, country }) => {
         <Span>
           {country.country === "UK"
             ? "National Insurance Contribution:"
-            : "Universal Social Charge:"}
+            : "Universal Social Charge (USC):"}
         </Span>
         {taxInfo.currency + parseFloat(taxInfo.ncc?.totalTax).toFixed(2)}
       </Paragraph>
+      {country.country === "Ireland" && (
+        <Paragraph color="primary">
+          <Span>Pay-Related Social Insurance (PRSI):</Span>
+          {taxInfo.currency + parseFloat(taxInfo.prsi).toFixed(2)}
+        </Paragraph>
+      )}
       {country.country === "UK" && (
         <Paragraph color="primary">
           <Span>Health And Social Care Levies:</Span>
