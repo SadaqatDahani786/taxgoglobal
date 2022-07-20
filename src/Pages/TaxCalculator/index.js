@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 
 //UI Components
+import Heading from "../../Components/Heading";
 import Paragrah from "../../Components/Paragraph";
 import Button from "../../Components/Button";
 import Input from "../../Components/Input";
@@ -34,6 +35,13 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+`;
+
+//Heading Wrapper
+const HeadingWrapper = styled.div`
+  text-align: center;
+  text-transform: uppercase;
+  padding: 25px 0;
 `;
 
 //Button Wrapper
@@ -162,6 +170,9 @@ const TaxCalculator = () => {
         onClose={() => setShowAlertError(false)}
       />
       <AnchorLink to="/">Select Different Country?</AnchorLink>
+      <HeadingWrapper>
+        <Heading level={3}>{country.country} Tax Form</Heading>
+      </HeadingWrapper>
       <Paragrah size="lead" color="primary">
         Enter your amount in ({country?.currency?.symbol})
       </Paragrah>
