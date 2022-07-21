@@ -62,6 +62,7 @@ const AnchorLink = styled(Link)`
  */
 const TaxCalculator = () => {
   //State
+  const [taxResults, setTaxResults] = useState([]);
   const [selectedTaxYear, setSelectedTaxYear] = useState("2022/23");
   const [selectedFilingStatus, setSelectedFilingStatus] = useState("Single");
   const [showAlertError, setShowAlertError] = useState(false);
@@ -150,6 +151,32 @@ const TaxCalculator = () => {
     fetchCalcTax(
       null,
       (res) => {
+        const taxInfo = res.taxInfo;
+        if (country.country === "Ireland") {
+          setTaxResults([
+            {
+              title: "Gross Income",
+              value: taxInfo.currency + taxInfo.gross_income,
+            },
+            {
+              title: "Net Income",
+              value: taxInfo.currency + taxInfo.net_income,
+            },
+            {
+              title: "Universal Social Charge (USC)",
+              value: taxInfo.currency + taxInfo.usc,
+            },
+            {
+              title: "Pay-Related Social Insurance (PRSI)",
+              value: taxInfo.currency + taxInfo.prsi,
+            },
+            {
+              title: "Total Deduction",
+              value: taxInfo.currency + taxInfo.deduction,
+            },
+          ]);
+        }
+
         setErrorMessage("");
         setShowAlertError(false);
       },
@@ -233,8 +260,8 @@ const TaxCalculator = () => {
         </Button>
       </ButtonWrapper>
 
-      {!showAlertError && calculatedTax?.taxInfo ? (
-        <Results taxInfo={calculatedTax?.taxInfo} country={country} />
+      {!showAlertError && calculatedTax?.status === "success" ? (
+        <Results taxInfo={taxResults} />
       ) : (
         ""
       )}

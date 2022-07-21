@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Heading from "../Components/Heading";
 import Paragraph from "./Paragraph";
 import Table from "./Table";
+import ChartPie from "./ChartPie";
+import { useEffect, useState } from "react";
 
 /*
  ** **
@@ -23,9 +25,31 @@ const ResultsStyled = styled.div`
   box-shadow: var(--shadow-elevation-medium);
 `;
 
+//Wrapper
+const Wrapper = styled.div`
+  text-align: center;
+`;
+
+//List
+const List = styled.ul`
+  list-style: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+`;
+
+//List Item
+const ListItem = styled.li`
+  border-bottom: 1px solid var(--color-primary-alpha);
+  & > p {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+
 //Span
 const Span = styled.span`
-  font-weight: bold;
+  padding: 20px 0;
 `;
 
 /*
@@ -33,88 +57,55 @@ const Span = styled.span`
  ** ** ** COMPONENT [Results]
  ** **
  */
-const Results = ({ taxInfo, country }) => {
-  //Table cols
-  const cols = [
-    { heading: `From (${taxInfo.currency})`, field: "from" },
-    { heading: `To (${taxInfo.currency})`, field: "to" },
-    { heading: `Rate (%)`, field: "rate" },
-    { heading: `Tax (${taxInfo.currency})`, field: "tax" },
-  ];
+const Results = ({ taxInfo }) => {
+  const [chartData, setChartData] = useState();
 
-  //Table rows
-  const rows = taxInfo.slabWiseTax.map((curr) => ({
-    from: curr.taxSlab.from,
-    to: curr.taxSlab.to,
-    rate: curr.taxSlab.tax,
-    tax: curr.tax,
-  }));
+  useEffect(() => {
+    const labels = taxInfo.map((info) => info.title);
+    const data = taxInfo.map((info) => info.value.substring(1));
+
+    setChartData({ labels, data });
+  }, [taxInfo]);
+  //Table cols
+  // const cols = [
+  //   { heading: `From (${taxInfo.currency})`, field: "from" },
+  //   { heading: `To (${taxInfo.currency})`, field: "to" },
+  //   { heading: `Rate (%)`, field: "rate" },
+  //   { heading: `Tax (${taxInfo.currency})`, field: "tax" },
+  // ];
+
+  // //Table rows
+  // const rows = taxInfo.slabWiseTax.map((curr) => ({
+  //   from: curr.taxSlab.from,
+  //   to: curr.taxSlab.to,
+  //   rate: curr.taxSlab.tax,
+  //   tax: curr.tax,
+  // }));
 
   return (
     <ResultsStyled>
-      <Heading level={3}>Results (Monthly)</Heading>
-      <Paragraph color="primary">
-        <Span>Gross Income:</Span>
-        {taxInfo.currency + parseFloat(taxInfo.income / 12).toFixed(2)}
-      </Paragraph>
-      <Paragraph color="primary">
-        <Span>Tax:</Span>{" "}
-        {taxInfo.currency + parseFloat(taxInfo.totalTax / 12).toFixed(2)}
-      </Paragraph>
-      <Paragraph color="primary">
-        <Span>
-          {country.country === "UK"
-            ? "National Insurance Contribution:"
-            : "Universal Social Charge:"}
-        </Span>
-        {taxInfo.currency + parseFloat(taxInfo.ncc?.totalTax / 12).toFixed(2)}
-      </Paragraph>
-      {country.country === "Ireland" && (
-        <Paragraph color="primary">
-          <Span>Pay-Related Social Insurance (PRSI):</Span>
-          {taxInfo.currency + parseFloat(taxInfo.prsi / 12).toFixed(2)}
-        </Paragraph>
-      )}
-      {country.country === "UK" && (
-        <Paragraph color="primary">
-          <Span>Health And Social Care Levies:</Span>
-          {taxInfo.currency + parseFloat(taxInfo.acc.tax / 12).toFixed(2)}
-        </Paragraph>
-      )}
-      <hr />
-      <Heading level={3}>Results (Annual)</Heading>
-      <Paragraph color="primary">
-        <Span>Gross Income:</Span>{" "}
-        {taxInfo.currency + parseFloat(taxInfo.income).toFixed(2)}
-      </Paragraph>
-      <Paragraph color="primary">
-        <Span>Tax:</Span>{" "}
-        {taxInfo.currency + parseFloat(taxInfo.totalTax).toFixed(2)}
-      </Paragraph>
+      <Wrapper>
+        <Heading level={4}>Income Tax Results</Heading>
 
-      <Paragraph color="primary">
-        <Span>
-          {country.country === "UK"
-            ? "National Insurance Contribution:"
-            : "Universal Social Charge (USC):"}
-        </Span>
-        {taxInfo.currency + parseFloat(taxInfo.ncc?.totalTax).toFixed(2)}
-      </Paragraph>
-      {country.country === "Ireland" && (
-        <Paragraph color="primary">
-          <Span>Pay-Related Social Insurance (PRSI):</Span>
-          {taxInfo.currency + parseFloat(taxInfo.prsi).toFixed(2)}
-        </Paragraph>
-      )}
-      {country.country === "UK" && (
-        <Paragraph color="primary">
-          <Span>Health And Social Care Levies:</Span>
-          {taxInfo.currency + parseFloat(taxInfo.acc.tax).toFixed(2)}
-        </Paragraph>
-      )}
-      <hr />
-      <Heading level={3}>Income Tax Breakdown</Heading>
-      <Table color="primary" cols={cols} rows={rows} />
+        <List>
+          {taxInfo.map((info, ind) => (
+            <ListItem key={ind}>
+              <Paragraph color="primary">
+                <Span>{info.title}</Span>
+                <Span>{info.value}</Span>
+              </Paragraph>
+            </ListItem>
+          ))}
+        </List>
+      </Wrapper>
+
+      <Wrapper>
+        <Heading level={4}>Income Distribution Chart</Heading>
+        <ChartPie labels={chartData?.labels} data={chartData?.data} />
+      </Wrapper>
+
+      {/* <Heading level={3}>Income Tax Breakdown</Heading>
+      <Table color="primary" cols={cols} rows={rows} /> */}
     </ResultsStyled>
   );
 };

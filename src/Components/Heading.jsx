@@ -38,6 +38,17 @@ const Display3 = styled.h3`
   );
 `;
 
+//Display 4
+const Display4 = styled.h3`
+  font-size: 1.6rem;
+  color: var(
+    ${({ color }) =>
+      (color === "primary" && "--color-primary") ||
+      (color === "secondary" && "--color-secondary") ||
+      (color === "tertiary" && "--color-tertiary")}
+  );
+`;
+
 /*
  ** **
  ** ** ** COMPONENT [Heading]
@@ -47,7 +58,8 @@ const Heading = ({ level = 1, color = "primary", children }) => {
   return (
     (level === 1 && <Display1 color={color}>{children}</Display1>) ||
     (level === 2 && <Display2 color={color}>{children}</Display2>) ||
-    (level === 3 && <Display3 color={color}>{children}</Display3>)
+    (level === 3 && <Display3 color={color}>{children}</Display3>) ||
+    (level === 4 && <Display4 color={color}>{children}</Display4>)
   );
 };
 
