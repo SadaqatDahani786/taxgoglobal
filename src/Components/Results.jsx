@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 
 //UI Componets
 import Heading from "../Components/Heading";
@@ -69,7 +69,7 @@ const Span = styled.span`
  ** ** ** COMPONENT [Results]
  ** **
  */
-const Results = ({ taxInfo }) => {
+const Results = forwardRef(({ taxInfo }, ref) => {
   //State
   const [chartData, setChartData] = useState();
   const [isMonthly, setIsMonthly] = useState(false);
@@ -87,7 +87,7 @@ const Results = ({ taxInfo }) => {
   }, [taxInfo, isMonthly]);
 
   return (
-    <ResultsStyled>
+    <ResultsStyled ref={ref}>
       <Wrapper>
         <Heading level={4}>Income Tax Results</Heading>
 
@@ -137,6 +137,6 @@ const Results = ({ taxInfo }) => {
       </Wrapper>
     </ResultsStyled>
   );
-};
+});
 
 export default Results;

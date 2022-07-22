@@ -29,8 +29,6 @@ const CardBoxStyled = styled.div`
 
 //AnchorLink
 const AnchorLink = styled(Link)`
-  /* align-self: flex-end;
-  font-size: 1.6rem; */
   text-decoration: none;
   color: var(--color-primary);
 `;
@@ -41,6 +39,7 @@ const ImageWrapper = styled.div`
   height: 10rem;
   overflow: hidden;
   border-radius: 50%;
+  border: 2px solid var(--color-tertiary);
 `;
 
 //Image

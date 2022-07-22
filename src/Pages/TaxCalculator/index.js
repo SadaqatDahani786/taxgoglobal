@@ -80,7 +80,7 @@ const TaxCalculator = () => {
   const [selectedFilingStatus, setSelectedFilingStatus] = useState("");
   const [showAlertError, setShowAlertError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const countries = getCountriesList();
+  const [countries] = useState(getCountriesList());
   const [country, setCountry] = useState({});
   const Params = useParams();
   const Navigate = useNavigate();
@@ -91,13 +91,14 @@ const TaxCalculator = () => {
     if (ind === -1) Navigate("/404");
 
     setCountry(countries[ind]);
-  }, [Navigate, Params]);
+  }, [Navigate, countries, Params]);
 
   //Refs
   const refGrossIncome = useRef(null);
   const refAge = useRef(null);
   const refTaxYear = useRef(null);
   const refFilingStatus = useRef(null);
+  const refResults = useRef(null);
 
   //Form Input
   const grossIncome = useInput(
@@ -262,6 +263,10 @@ const TaxCalculator = () => {
     );
   };
 
+  useEffect(() => {
+    if (refResults.current) refResults.current.scrollIntoView();
+  }, [taxResults]);
+
   return (
     <Wrapper>
       <Alert
@@ -362,7 +367,7 @@ const TaxCalculator = () => {
       </FormWrapper>
 
       {!showAlertError && calculatedTax?.status === "success" ? (
-        <Results taxInfo={taxResults} />
+        <Results ref={refResults} taxInfo={taxResults} />
       ) : (
         ""
       )}

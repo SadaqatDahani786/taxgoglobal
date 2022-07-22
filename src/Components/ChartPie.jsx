@@ -1,6 +1,6 @@
-import Chart from "chart.js/auto";
-import styled from "styled-components";
 import { useEffect, useRef } from "react";
+import styled from "styled-components";
+import Chart from "chart.js/auto";
 
 /*
  ** ** =================================================
@@ -72,7 +72,7 @@ const ChartPie = ({ title = "", labels = [], data = [] }) => {
     return () => {
       ChartObj.destroy();
     };
-  }, [labels, data]);
+  }, [labels, title, data]);
 
   return (
     <Wrapper>
