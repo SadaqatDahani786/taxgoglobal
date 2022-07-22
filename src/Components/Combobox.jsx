@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styled from "styled-components";
 
 /*
@@ -30,6 +30,9 @@ const ComboboxStyled = styled.select`
   color: var(--color-primary);
   width: 15rem;
   width: ${({ block }) => block && "100%"};
+  &:focus {
+    border: 2px solid var(--color-info);
+  }
 `;
 
 //Combobox Item
@@ -48,31 +51,40 @@ const Label = styled.label`
  ** ** ** COMPONENT [Combobox]
  ** **
  */
-const Combobox = ({
-  size = "medium",
-  items = [],
-  dataset,
-  label,
-  block = false,
-  value,
-  onChange,
-}) => {
-  return (
-    <Wrapper>
-      {label && <Label>{label}</Label>}
-      <ComboboxStyled
-        size={size}
-        {...dataset}
-        block={block}
-        value={value}
-        onChange={onChange}
-      >
-        {items.map((item, ind) => (
-          <ComboboxItem key={ind}>{item}</ComboboxItem>
-        ))}
-      </ComboboxStyled>
-    </Wrapper>
-  );
-};
+const Combobox = forwardRef(
+  (
+    {
+      size = "medium",
+      items = [],
+      dataset,
+      label,
+      placeholder,
+      block = false,
+      value,
+      onChange,
+    },
+    ref
+  ) => {
+    return (
+      <Wrapper>
+        {label && <Label>{label}</Label>}
+        <ComboboxStyled
+          ref={ref}
+          size={size}
+          {...dataset}
+          block={block}
+          value={value}
+          onChange={onChange}
+          defaultValue={placeholder}
+        >
+          <ComboboxItem disabled>{placeholder}</ComboboxItem>
+          {items.map((item, ind) => (
+            <ComboboxItem key={ind}>{item}</ComboboxItem>
+          ))}
+        </ComboboxStyled>
+      </Wrapper>
+    );
+  }
+);
 
 export default Combobox;

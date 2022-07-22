@@ -15,8 +15,39 @@ const CardBoxStyled = styled.div`
   height: 20rem;
   background-color: var(--color-secondary);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 20px;
+  text-align: center;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-elevation-low);
+  &:hover {
+    box-shadow: var(--shadow-elevation-medium);
+  }
+`;
+
+//AnchorLink
+const AnchorLink = styled(Link)`
+  /* align-self: flex-end;
+  font-size: 1.6rem; */
+  text-decoration: none;
+  color: var(--color-primary);
+`;
+
+//Image Wrapper
+const ImageWrapper = styled.div`
+  width: 11rem;
+  height: 10rem;
+  overflow: hidden;
+  border-radius: 50%;
+`;
+
+//Image
+const Image = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 /*
@@ -24,13 +55,16 @@ const CardBoxStyled = styled.div`
  ** ** ** COMPONENT [CardBox]
  ** **
  */
-const CardBox = ({ text, img, path }) => {
+const CardBox = ({ text, flag, path }) => {
   return (
-    <CardBoxStyled>
-      <Link to={`tax-calculator/${path}`}>
+    <AnchorLink to={`tax-calculator/${path}`}>
+      <CardBoxStyled>
         <Heading level={3}>{text}</Heading>
-      </Link>
-    </CardBoxStyled>
+        <ImageWrapper>
+          <Image src={flag} alt={text.toLowerCase() + "-flag"} />
+        </ImageWrapper>
+      </CardBoxStyled>
+    </AnchorLink>
   );
 };
 

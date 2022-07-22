@@ -20,6 +20,7 @@ const FooterStyled = styled.footer`
 //Copyright Text Wrapper
 const CopyrightTextWrapper = styled.div`
   text-align: center;
+  padding: 10px 0;
 `;
 
 /*

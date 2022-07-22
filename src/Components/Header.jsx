@@ -14,6 +14,7 @@ const HeaderStyled = styled.header`
   min-height: 12vh;
   background-color: var(--color-primary);
   text-align: center;
+  padding: 10px 0;
 `;
 
 /*

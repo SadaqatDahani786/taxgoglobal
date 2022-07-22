@@ -13,11 +13,19 @@ import { getCountriesList } from "../../Helpers/utils";
  ** ** ** STYLED COMPONENTS
  ** **
  */
-const Wrapper = styled.div`
+//Container
+const Container = styled.div`
   min-height: 83vh;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+`;
+
+//Wrapper
+const Wrapper = styled.div`
+  display: flex;
   justify-content: flex-start;
-  align-items: center;
   gap: 20px;
   flex-wrap: wrap; ;
 `;
@@ -31,14 +39,18 @@ const Home = () => {
   const countries = getCountriesList();
 
   return (
-    <React.Fragment>
+    <Container>
       <Heading level={3}>Where Do You Live?</Heading>
       <Wrapper>
         {countries.map((country) => (
-          <CardBox path={country.path} text={country.country} />
+          <CardBox
+            flag={country.flag}
+            path={country.path}
+            text={country.country}
+          />
         ))}
       </Wrapper>
-    </React.Fragment>
+    </Container>
   );
 };
 

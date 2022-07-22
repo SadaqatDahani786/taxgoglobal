@@ -76,8 +76,8 @@ const FormGroup = styled.div`
 const TaxCalculator = () => {
   //State
   const [taxResults, setTaxResults] = useState([]);
-  const [selectedTaxYear, setSelectedTaxYear] = useState("2022/23");
-  const [selectedFilingStatus, setSelectedFilingStatus] = useState("Single");
+  const [selectedTaxYear, setSelectedTaxYear] = useState("");
+  const [selectedFilingStatus, setSelectedFilingStatus] = useState("");
   const [showAlertError, setShowAlertError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const countries = getCountriesList();
@@ -91,11 +91,13 @@ const TaxCalculator = () => {
     if (ind === -1) Navigate("/404");
 
     setCountry(countries[ind]);
-  }, [Navigate, countries, Params]);
+  }, [Navigate, Params]);
 
   //Refs
   const refGrossIncome = useRef(null);
   const refAge = useRef(null);
+  const refTaxYear = useRef(null);
+  const refFilingStatus = useRef(null);
 
   //Form Input
   const grossIncome = useInput(
@@ -163,6 +165,13 @@ const TaxCalculator = () => {
       return refGrossIncome.current.focus();
     else if (!age.validation.touched || age.validation.error)
       return refAge.current.focus();
+    else if (!selectedTaxYear || selectedTaxYear === "")
+      return refTaxYear.current.focus();
+    else if (
+      (!selectedFilingStatus || selectedFilingStatus === "") &&
+      country.country === "Ireland"
+    )
+      return refFilingStatus.current.focus();
 
     //All Ok
     fetchCalcTax(
@@ -292,7 +301,11 @@ const TaxCalculator = () => {
       <FormWrapper>
         <FormGroup>
           <Paragrah size="lead" color="primary">
-            What age did you turn in {selectedTaxYear.split("/")[0]}?
+            What age did you turn in{" "}
+            {selectedTaxYear
+              ? selectedTaxYear.split("/")[0]
+              : new Date(Date.now()).getFullYear()}
+            ?
           </Paragrah>
           <Input
             onChange={age.onChangeHandler}
@@ -312,9 +325,11 @@ const TaxCalculator = () => {
       <FormWrapper>
         <FormGroup>
           <Combobox
+            ref={refTaxYear}
             size="large"
             label={"Tax Year"}
-            items={["2022/23", "2021/22", "2020/21", "2019/20", "2018/19"]}
+            placeholder={"Select Tax Year"}
+            items={country.years}
             onChange={(e) => setSelectedTaxYear(e.target.value)}
           />
         </FormGroup>
@@ -323,8 +338,10 @@ const TaxCalculator = () => {
         <FormGroup>
           {country.country === "Ireland" && (
             <Combobox
+              ref={refFilingStatus}
               size="large"
               label={"Filing Status"}
+              placeholder={"Select Filing Status"}
               items={["Single", "Married - One Income", "One Parent Family"]}
               onChange={(e) => setSelectedFilingStatus(e.target.value)}
             />

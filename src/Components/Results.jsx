@@ -28,6 +28,9 @@ const ResultsStyled = styled.div`
 //Wrapper
 const Wrapper = styled.div`
   text-align: center;
+  &:last-child {
+    margin: 0 auto;
+  }
 `;
 
 //List
@@ -48,7 +51,8 @@ const ListItem = styled.li`
 `;
 
 //Button Group
-const ButtonGroup = styled.div`
+const ButtonGroup = styled.span`
+  height: fit-content;
   display: flex;
   border: 1px solid var(--color-primary);
   border-radius: 0.1rem;

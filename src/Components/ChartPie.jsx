@@ -28,10 +28,6 @@ const ChartPie = ({ title = "", labels = [], data = [] }) => {
 
   //Instantiate Chart
   useEffect(() => {
-    //Data
-    const DATA_COUNT = 5;
-    const NUMBER_CFG = { count: DATA_COUNT, min: 0, max: 100 };
-
     const dataset = {
       labels,
       datasets: [
@@ -39,12 +35,11 @@ const ChartPie = ({ title = "", labels = [], data = [] }) => {
           label: "Dataset 1",
           data,
           backgroundColor: [
-            "red",
-            "aquablue",
-            "deeppink",
-            "white",
-            "gray",
-            "black",
+            "#1B065E",
+            "#F2545B",
+            "#F3F7F0",
+            "#39A0ED",
+            "#246A73",
           ],
         },
       ],
@@ -55,12 +50,12 @@ const ChartPie = ({ title = "", labels = [], data = [] }) => {
       type: "pie",
       data: dataset,
       options: {
-        responsive: true,
-        aspectRatio: 5,
-        maintainAspectRatio: true,
+        responsive: false,
+        // aspectRatio: 5,
+        // maintainAspectRatio: true,
         plugins: {
           legend: {
-            position: "top",
+            position: "right",
           },
           title: {
             display: true,
