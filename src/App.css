@@ -57,7 +57,7 @@
   }
 
 html{        
-    /*BASE FONT SIZE*/
+    /*BASE FONT SIZE => 1rem = 10px instead of 16px default*/
     /* font-size: 62.5%; */
     
     /*FONT FAMILY*/

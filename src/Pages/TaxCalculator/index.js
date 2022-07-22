@@ -21,6 +21,7 @@ import {
   IsDecimal,
   isNumber,
   isMax,
+  isMin,
 } from "../../Helpers/validation";
 import { getCountriesList } from "../../Helpers/utils";
 
@@ -34,7 +35,6 @@ const Wrapper = styled.div`
   padding: 50px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
 `;
 
 //Heading Wrapper
@@ -44,15 +44,28 @@ const HeadingWrapper = styled.div`
   padding: 25px 0;
 `;
 
-//Button Wrapper
-const ButtonWrapper = styled.div``;
-
 //AnchorLink
 const AnchorLink = styled(Link)`
   align-self: flex-end;
   font-size: 1.6rem;
   text-decoration: none;
   color: var(--color-primary);
+`;
+
+//Form Wrapper
+const FormWrapper = styled.div`
+  display: flex;
+  gap: 20px;
+  background-color: var(--color-secondary);
+  padding: 20px 20px 0;
+`;
+
+//Form Group
+const FormGroup = styled.div`
+  flex-grow: 1;
+  &:first-of-type {
+    flex-grow: 1;
+  }
 `;
 
 /*
@@ -110,9 +123,16 @@ const TaxCalculator = () => {
         message: "Please enter a valid number for your age.",
       },
       {
+        validator: isMin,
+        options: {
+          min: 18,
+        },
+        message: "Please enter an age between (18-100).",
+      },
+      {
         validator: isMax,
         options: {
-          max: 122,
+          max: 100,
         },
         message: "Please enter an age between (18-100).",
       },
@@ -141,17 +161,17 @@ const TaxCalculator = () => {
     //Check For Errors
     if (!grossIncome.validation.touched || grossIncome.validation.error)
       return refGrossIncome.current.focus();
-    else if (
-      country.country === "Ireland" &&
-      (!age.validation.touched || age.validation.error)
-    )
+    else if (!age.validation.touched || age.validation.error)
       return refAge.current.focus();
 
     //All Ok
     fetchCalcTax(
       null,
       (res) => {
+        //Tax Info -> Response
         const taxInfo = res.taxInfo;
+
+        //Set Results
         if (country.country === "Ireland") {
           setTaxResults([
             {
@@ -169,6 +189,52 @@ const TaxCalculator = () => {
             {
               title: "Pay-Related Social Insurance (PRSI)",
               value: taxInfo.currency + taxInfo.prsi,
+            },
+            {
+              title: "Total Deduction",
+              value: taxInfo.currency + taxInfo.deduction,
+            },
+          ]);
+        } else if (country.country === "UK") {
+          setTaxResults([
+            {
+              title: "Gross Income",
+              value: taxInfo.currency + taxInfo.gross_income,
+            },
+            {
+              title: "Net Income",
+              value: taxInfo.currency + taxInfo.net_income,
+            },
+            {
+              title: "National Insurace Contributions (Class 1 NIC)",
+              value: taxInfo.currency + taxInfo.nic,
+            },
+            {
+              title: "Social And Health Care Levy",
+              value: taxInfo.currency + taxInfo.levies,
+            },
+            {
+              title: "Total Deduction",
+              value: taxInfo.currency + taxInfo.deduction,
+            },
+          ]);
+        } else if (country.country === "Netherland") {
+          setTaxResults([
+            {
+              title: "Gross Income",
+              value: taxInfo.currency + taxInfo.gross_income,
+            },
+            {
+              title: "Net Income",
+              value: taxInfo.currency + taxInfo.net_income,
+            },
+            {
+              title: "General Tax Credit",
+              value: taxInfo.currency + taxInfo.general_tax_credit,
+            },
+            {
+              title: "Labour Tax Credit",
+              value: taxInfo.currency + taxInfo.labour_tax_credit,
             },
             {
               title: "Total Deduction",
@@ -197,28 +263,36 @@ const TaxCalculator = () => {
         onClose={() => setShowAlertError(false)}
       />
       <AnchorLink to="/">Select Different Country?</AnchorLink>
-      <HeadingWrapper>
-        <Heading level={3}>{country.country} Tax Form</Heading>
-      </HeadingWrapper>
-      <Paragrah size="lead" color="primary">
-        Enter your amount in ({country?.currency?.symbol})
-      </Paragrah>
-      <Input
-        onChange={grossIncome.onChangeHandler}
-        onBlur={grossIncome.onBlurHandler}
-        value={grossIncome.value}
-        error={grossIncome.validation.error}
-        helpertext={grossIncome.validation.message}
-        name="grossIncome"
-        ref={refGrossIncome}
-        label="Annual Gross Income"
-        size="medium"
-        color="primary"
-      />
-      {country.country === "Ireland" && (
-        <React.Fragment>
+      <FormWrapper>
+        <FormGroup>
+          <HeadingWrapper>
+            <Heading level={3}>{country.country} Tax Form</Heading>
+          </HeadingWrapper>
+        </FormGroup>
+      </FormWrapper>
+      <FormWrapper>
+        <FormGroup>
           <Paragrah size="lead" color="primary">
-            How old are you?
+            Enter your amount in ({country?.currency?.symbol})
+          </Paragrah>
+          <Input
+            onChange={grossIncome.onChangeHandler}
+            onBlur={grossIncome.onBlurHandler}
+            value={grossIncome.value}
+            error={grossIncome.validation.error}
+            helpertext={grossIncome.validation.message}
+            name="grossIncome"
+            ref={refGrossIncome}
+            label="Annual Gross Income"
+            size="medium"
+            color="primary"
+          />
+        </FormGroup>
+      </FormWrapper>
+      <FormWrapper>
+        <FormGroup>
+          <Paragrah size="lead" color="primary">
+            What age did you turn in {selectedTaxYear.split("/")[0]}?
           </Paragrah>
           <Input
             onChange={age.onChangeHandler}
@@ -231,24 +305,34 @@ const TaxCalculator = () => {
             label="Age"
             size="medium"
             color="primary"
+            type="number"
           />
-        </React.Fragment>
-      )}
-      <Combobox
-        size="large"
-        label={"Tax Year"}
-        items={["2022/23", "2021/22", "2020/21", "2019/20", "2018/19"]}
-        onChange={(e) => setSelectedTaxYear(e.target.value)}
-      />
-      {country.country === "Ireland" && (
-        <Combobox
-          size="large"
-          label={"Filing Status"}
-          items={["Single", "Married - One Income", "One Parent Family"]}
-          onChange={(e) => setSelectedFilingStatus(e.target.value)}
-        />
-      )}
-      <ButtonWrapper>
+        </FormGroup>
+      </FormWrapper>
+      <FormWrapper>
+        <FormGroup>
+          <Combobox
+            size="large"
+            label={"Tax Year"}
+            items={["2022/23", "2021/22", "2020/21", "2019/20", "2018/19"]}
+            onChange={(e) => setSelectedTaxYear(e.target.value)}
+          />
+        </FormGroup>
+      </FormWrapper>
+      <FormWrapper>
+        <FormGroup>
+          {country.country === "Ireland" && (
+            <Combobox
+              size="large"
+              label={"Filing Status"}
+              items={["Single", "Married - One Income", "One Parent Family"]}
+              onChange={(e) => setSelectedFilingStatus(e.target.value)}
+            />
+          )}
+        </FormGroup>
+      </FormWrapper>
+
+      <FormWrapper>
         <Button
           loading={calcTaxLoading}
           onClick={clickCalculateTaxHandler}
@@ -258,7 +342,7 @@ const TaxCalculator = () => {
         >
           Calculate Tax
         </Button>
-      </ButtonWrapper>
+      </FormWrapper>
 
       {!showAlertError && calculatedTax?.status === "success" ? (
         <Results taxInfo={taxResults} />

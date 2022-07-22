@@ -10,6 +10,15 @@ export function getCountriesList() {
       },
     },
     {
+      country: "Netherland",
+      path: "netherland",
+      currency: {
+        name: "EUR",
+        type: "euro",
+        symbol: "€",
+      },
+    },
+    {
       country: "UK",
       path: "uk",
       currency: {

@@ -1,11 +1,11 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 
 //UI Componets
 import Heading from "../Components/Heading";
 import Paragraph from "./Paragraph";
-import Table from "./Table";
 import ChartPie from "./ChartPie";
-import { useEffect, useState } from "react";
+import Button from "./Button";
 
 /*
  ** **
@@ -47,6 +47,14 @@ const ListItem = styled.li`
   }
 `;
 
+//Button Group
+const ButtonGroup = styled.div`
+  display: flex;
+  border: 1px solid var(--color-primary);
+  border-radius: 0.1rem;
+  overflow: hidden;
+`;
+
 //Span
 const Span = styled.span`
   padding: 20px 0;
@@ -58,29 +66,21 @@ const Span = styled.span`
  ** **
  */
 const Results = ({ taxInfo }) => {
+  //State
   const [chartData, setChartData] = useState();
+  const [isMonthly, setIsMonthly] = useState(false);
 
+  //Set Chart Data
   useEffect(() => {
     const labels = taxInfo.map((info) => info.title);
-    const data = taxInfo.map((info) => info.value.substring(1));
+    const data = taxInfo.map((info) =>
+      isMonthly
+        ? (info.value.substring(1) / 12).toFixed(2)
+        : info.value.substring(1)
+    );
 
     setChartData({ labels, data });
-  }, [taxInfo]);
-  //Table cols
-  // const cols = [
-  //   { heading: `From (${taxInfo.currency})`, field: "from" },
-  //   { heading: `To (${taxInfo.currency})`, field: "to" },
-  //   { heading: `Rate (%)`, field: "rate" },
-  //   { heading: `Tax (${taxInfo.currency})`, field: "tax" },
-  // ];
-
-  // //Table rows
-  // const rows = taxInfo.slabWiseTax.map((curr) => ({
-  //   from: curr.taxSlab.from,
-  //   to: curr.taxSlab.to,
-  //   rate: curr.taxSlab.tax,
-  //   tax: curr.tax,
-  // }));
+  }, [taxInfo, isMonthly]);
 
   return (
     <ResultsStyled>
@@ -88,11 +88,39 @@ const Results = ({ taxInfo }) => {
         <Heading level={4}>Income Tax Results</Heading>
 
         <List>
+          <ListItem>
+            <Paragraph color="primary">
+              <Span>Tax Results Per</Span>
+              <Span>
+                <ButtonGroup>
+                  <Button
+                    onClick={() => setIsMonthly(true)}
+                    variant={isMonthly ? "contained" : "text"}
+                    color="primary"
+                  >
+                    Monthly
+                  </Button>
+                  <Button
+                    onClick={() => setIsMonthly(false)}
+                    variant={isMonthly ? "text" : "contained"}
+                    color="primary"
+                  >
+                    Annual
+                  </Button>
+                </ButtonGroup>
+              </Span>
+            </Paragraph>
+          </ListItem>
           {taxInfo.map((info, ind) => (
             <ListItem key={ind}>
               <Paragraph color="primary">
                 <Span>{info.title}</Span>
-                <Span>{info.value}</Span>
+                <Span>
+                  {isMonthly
+                    ? info.value.substring(0, 1) +
+                      (info.value.substring(1) / 12).toFixed(2)
+                    : info.value}
+                </Span>
               </Paragraph>
             </ListItem>
           ))}
@@ -103,9 +131,6 @@ const Results = ({ taxInfo }) => {
         <Heading level={4}>Income Distribution Chart</Heading>
         <ChartPie labels={chartData?.labels} data={chartData?.data} />
       </Wrapper>
-
-      {/* <Heading level={3}>Income Tax Breakdown</Heading>
-      <Table color="primary" cols={cols} rows={rows} /> */}
     </ResultsStyled>
   );
 };
