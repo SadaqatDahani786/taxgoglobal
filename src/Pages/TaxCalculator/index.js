@@ -85,7 +85,7 @@ const TaxCalculator = () => {
   const Params = useParams();
   const Navigate = useNavigate();
 
-  //If wrongo parameter, redirect to 404 page
+  //If wrong parameter, redirect to 404 page
   useEffect(() => {
     const ind = countries.findIndex((curr) => curr.path === Params.country);
     if (ind === -1) Navigate("/404");
@@ -189,10 +189,6 @@ const TaxCalculator = () => {
               value: taxInfo.currency + taxInfo.gross_income,
             },
             {
-              title: "Net Income",
-              value: taxInfo.currency + taxInfo.net_income,
-            },
-            {
               title: "Universal Social Charge (USC)",
               value: taxInfo.currency + taxInfo.usc,
             },
@@ -204,16 +200,16 @@ const TaxCalculator = () => {
               title: "Total Deduction",
               value: taxInfo.currency + taxInfo.deduction,
             },
+            {
+              title: "Net Income",
+              value: taxInfo.currency + taxInfo.net_income,
+            },
           ]);
         } else if (country.country === "UK") {
           setTaxResults([
             {
               title: "Gross Income",
               value: taxInfo.currency + taxInfo.gross_income,
-            },
-            {
-              title: "Net Income",
-              value: taxInfo.currency + taxInfo.net_income,
             },
             {
               title: "National Insurace Contributions (Class 1 NIC)",
@@ -227,16 +223,16 @@ const TaxCalculator = () => {
               title: "Total Deduction",
               value: taxInfo.currency + taxInfo.deduction,
             },
+            {
+              title: "Net Income",
+              value: taxInfo.currency + taxInfo.net_income,
+            },
           ]);
         } else if (country.country === "Netherland") {
           setTaxResults([
             {
               title: "Gross Income",
               value: taxInfo.currency + taxInfo.gross_income,
-            },
-            {
-              title: "Net Income",
-              value: taxInfo.currency + taxInfo.net_income,
             },
             {
               title: "General Tax Credit",
@@ -249,6 +245,68 @@ const TaxCalculator = () => {
             {
               title: "Total Deduction",
               value: taxInfo.currency + taxInfo.deduction,
+            },
+            {
+              title: "Net Income",
+              value: taxInfo.currency + taxInfo.net_income,
+            },
+          ]);
+        } else if (country.country === "Nigeria") {
+          setTaxResults([
+            {
+              title: "Gross Income",
+              value: taxInfo.currency + taxInfo.gross_income,
+            },
+            {
+              title: "Consolidated Relief Allowance",
+              value: taxInfo.currency + taxInfo.cra,
+            },
+            {
+              title: "Gross Income Relief",
+              value: taxInfo.currency + taxInfo.gia,
+            },
+            {
+              title: "National Housing Fund (NHF) Contributions",
+              value: taxInfo.currency + taxInfo.nhf,
+            },
+            {
+              title: "Pension Contributions",
+              value: taxInfo.currency + taxInfo.pension,
+            },
+            {
+              title: "Total Deduction",
+              value: taxInfo.currency + taxInfo.deduction,
+            },
+            {
+              title: "Net Income",
+              value: taxInfo.currency + taxInfo.net_income,
+            },
+          ]);
+        } else if (country.country === "Kenya") {
+          setTaxResults([
+            {
+              title: "Gross Income",
+              value: taxInfo.currency + taxInfo.gross_income,
+            },
+            {
+              title: "National Social Security Fund (NSSF)",
+              value: taxInfo.currency + taxInfo.nssf,
+            },
+            {
+              title: "National Health Insurance Fund (NHIF)",
+              value: taxInfo.currency + taxInfo.nhif,
+            },
+            {
+              title: "Pay As You Earned (PAYE)",
+              value: taxInfo.currency + taxInfo.paye,
+            },
+            {
+              title: "Total Deduction",
+              value: taxInfo.currency + taxInfo.deduction,
+            },
+            {
+              title: "Net Income",
+              value: taxInfo.currency + taxInfo.net_income,
             },
           ]);
         }
@@ -367,7 +425,11 @@ const TaxCalculator = () => {
       </FormWrapper>
 
       {!showAlertError && calculatedTax?.status === "success" ? (
-        <Results ref={refResults} taxInfo={taxResults} />
+        <Results
+          ref={refResults}
+          taxInfo={taxResults}
+          currency={country.currency.symbol}
+        />
       ) : (
         ""
       )}

@@ -2,6 +2,8 @@
 import flagUK from "../Assets/Images/flag-uk.jpg";
 import flagNetherlands from "../Assets/Images/flag-netherlands.png";
 import flagIreland from "../Assets/Images/flag-ireland.jpg";
+import flagNigeria from "../Assets/Images/flag-nigeria.jpg";
+import flagKenya from "../Assets/Images/flag-kenya.jpg";
 
 export function getCountriesList() {
   const countries = [
@@ -17,6 +19,17 @@ export function getCountriesList() {
       },
     },
     {
+      country: "Kenya",
+      path: "kenya",
+      flag: flagKenya,
+      years: ["2020/21"],
+      currency: {
+        name: "KSH",
+        type: "shilling",
+        symbol: "KES",
+      },
+    },
+    {
       country: "Netherland",
       path: "netherland",
       flag: flagNetherlands,
@@ -25,6 +38,17 @@ export function getCountriesList() {
         name: "EUR",
         type: "euro",
         symbol: "€",
+      },
+    },
+    {
+      country: "Nigeria",
+      path: "nigeria",
+      flag: flagNigeria,
+      years: ["2022/23"],
+      currency: {
+        name: "NGN",
+        type: "naira",
+        symbol: "₦",
       },
     },
     {

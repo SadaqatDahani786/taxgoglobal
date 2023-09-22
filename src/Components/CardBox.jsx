@@ -36,7 +36,7 @@ const AnchorLink = styled(Link)`
 //Image Wrapper
 const ImageWrapper = styled.div`
   width: 11rem;
-  height: 10rem;
+  height: 12.5rem;
   overflow: hidden;
   border-radius: 50%;
   border: 2px solid var(--color-tertiary);

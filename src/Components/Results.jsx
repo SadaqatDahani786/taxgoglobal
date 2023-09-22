@@ -69,7 +69,7 @@ const Span = styled.span`
  ** ** ** COMPONENT [Results]
  ** **
  */
-const Results = forwardRef(({ taxInfo }, ref) => {
+const Results = forwardRef(({ taxInfo, currency }, ref) => {
   //State
   const [chartData, setChartData] = useState();
   const [isMonthly, setIsMonthly] = useState(false);
@@ -79,12 +79,12 @@ const Results = forwardRef(({ taxInfo }, ref) => {
     const labels = taxInfo.map((info) => info.title);
     const data = taxInfo.map((info) =>
       isMonthly
-        ? (info.value.substring(1) / 12).toFixed(2)
-        : info.value.substring(1)
+        ? (info.value.substring(currency.length) / 12).toFixed(2)
+        : info.value.substring(currency.length)
     );
 
     setChartData({ labels, data });
-  }, [taxInfo, isMonthly]);
+  }, [taxInfo, isMonthly, currency]);
 
   return (
     <ResultsStyled ref={ref}>
@@ -121,8 +121,8 @@ const Results = forwardRef(({ taxInfo }, ref) => {
                 <Span>{info.title}</Span>
                 <Span>
                   {isMonthly
-                    ? info.value.substring(0, 1) +
-                      (info.value.substring(1) / 12).toFixed(2)
+                    ? info.value.substring(0, currency.length) +
+                      (info.value.substring(currency.length) / 12).toFixed(2)
                     : info.value}
                 </Span>
               </Paragraph>
