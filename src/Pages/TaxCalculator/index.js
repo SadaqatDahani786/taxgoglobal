@@ -309,8 +309,61 @@ const TaxCalculator = () => {
               value: taxInfo.currency + taxInfo.net_income,
             },
           ]);
+        } else if (country.country === "South Africa") {
+          setTaxResults([
+            {
+              title: "Gross Income",
+              value: taxInfo.currency + taxInfo.gross_income,
+            },
+            {
+              title: "Pay As You Earned (PAYE)",
+              value: taxInfo.currency + taxInfo.paye,
+            },
+            {
+              title: "Unemployment Insurance Fund (UIF)",
+              value: taxInfo.currency + taxInfo.uif,
+            },
+            {
+              title: "Total Deduction",
+              value: taxInfo.currency + taxInfo.deduction,
+            },
+            {
+              title: "Net Income",
+              value: taxInfo.currency + taxInfo.net_income,
+            },
+          ]);
+        } else if (country.country === "Serbia") {
+          setTaxResults([
+            {
+              title: "Gross Income",
+              value: taxInfo.currency + taxInfo.gross_income,
+            },
+            {
+              title: "Tax",
+              value: taxInfo.currency + taxInfo.tax,
+            },
+            {
+              title: "Health Insurance Contribution",
+              value: taxInfo.currency + taxInfo.health_insurance,
+            },
+            {
+              title: "Pension Contribution",
+              value: taxInfo.currency + taxInfo.pension,
+            },
+            {
+              title: "Unemployment Insurance Contribution",
+              value: taxInfo.currency + taxInfo.unemployment_insurance,
+            },
+            {
+              title: "Total Deduction",
+              value: taxInfo.currency + taxInfo.deduction,
+            },
+            {
+              title: "Net Income",
+              value: taxInfo.currency + taxInfo.net_income,
+            },
+          ]);
         }
-
         setErrorMessage("");
         setShowAlertError(false);
       },

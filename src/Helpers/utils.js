@@ -4,6 +4,8 @@ import flagNetherlands from "../Assets/Images/flag-netherlands.png";
 import flagIreland from "../Assets/Images/flag-ireland.jpg";
 import flagNigeria from "../Assets/Images/flag-nigeria.jpg";
 import flagKenya from "../Assets/Images/flag-kenya.jpg";
+import flagSouthAfrica from "../Assets/Images/flag-south-africa.jpg";
+import flagSerbia from "../Assets/Images/flag-serbia.jpg";
 
 export function getCountriesList() {
   const countries = [
@@ -49,6 +51,28 @@ export function getCountriesList() {
         name: "NGN",
         type: "naira",
         symbol: "₦",
+      },
+    },
+    {
+      country: "Serbia",
+      path: "serbia",
+      flag: flagSerbia,
+      years: ["2019/20"],
+      currency: {
+        name: "RSD",
+        type: "dinar",
+        symbol: "RSD",
+      },
+    },
+    {
+      country: "South Africa",
+      path: "south-africa",
+      flag: flagSouthAfrica,
+      years: ["2021/22"],
+      currency: {
+        name: "ZAR",
+        type: "rand",
+        symbol: "R",
       },
     },
     {
