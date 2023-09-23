@@ -79,6 +79,7 @@ const TaxCalculator = () => {
   const [selectedTaxYear, setSelectedTaxYear] = useState("");
   const [selectedFilingStatus, setSelectedFilingStatus] = useState("");
   const [selectedNoOfChilds, setSelectedNoOfChilds] = useState("");
+  const [selectedProvinceOrState, setSelectedProvinceOrState] = useState("");
   const [showAlertError, setShowAlertError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [countries] = useState(getCountriesList());
@@ -101,6 +102,7 @@ const TaxCalculator = () => {
   const refFilingStatus = useRef(null);
   const refNoOfChilds = useRef(null);
   const refResults = useRef(null);
+  const refProvincesOrStates = useRef(null);
 
   //Form Input
   const grossIncome = useInput(
@@ -152,6 +154,7 @@ const TaxCalculator = () => {
       selectedTaxYear,
       selectedFilingStatus,
       selectedNoOfChilds,
+      selectedProvinceOrState,
       age.value
     )
   );
@@ -175,7 +178,8 @@ const TaxCalculator = () => {
       (!selectedFilingStatus || selectedFilingStatus === "") &&
       (country.country === "Ireland" ||
         country.country === "France" ||
-        country.country === "Hong Kong")
+        country.country === "Hong Kong" ||
+        country.country === "America")
     )
       return refFilingStatus.current.focus();
     else if (
@@ -185,6 +189,11 @@ const TaxCalculator = () => {
         selectedFilingStatus === "One Parent Family")
     )
       return refNoOfChilds.current.focus();
+    else if (
+      (!selectedProvinceOrState || selectedProvinceOrState === "") &&
+      (country.country === "Canada" || country.country === "America")
+    )
+      return refProvincesOrStates.current.focus();
 
     //All Ok
     fetchCalcTax(
@@ -433,6 +442,60 @@ const TaxCalculator = () => {
               value: taxInfo.currency + taxInfo.net_income,
             },
           ]);
+        } else if (country.country === "Canada") {
+          setTaxResults([
+            {
+              title: "Gross Income",
+              value: taxInfo.currency + taxInfo.gross_income,
+            },
+            {
+              title: "Federal Tax",
+              value: taxInfo.currency + taxInfo.tax,
+            },
+            {
+              title: "Provincial Tax",
+              value: taxInfo.currency + taxInfo.tax_provincial,
+            },
+            {
+              title: "Canada Pension Plan (CPP)",
+              value: taxInfo.currency + taxInfo.cpp,
+            },
+            {
+              title: "Employment Insurance (EI)",
+              value: taxInfo.currency + taxInfo.ei,
+            },
+            {
+              title: "Total Deduction",
+              value: taxInfo.currency + taxInfo.deduction,
+            },
+            {
+              title: "Net Income",
+              value: taxInfo.currency + taxInfo.net_income,
+            },
+          ]);
+        } else if (country.country === "America") {
+          setTaxResults([
+            {
+              title: "Gross Income",
+              value: taxInfo.currency + taxInfo.gross_income,
+            },
+            {
+              title: "Federal Tax",
+              value: taxInfo.currency + taxInfo.tax,
+            },
+            {
+              title: "State Tax",
+              value: taxInfo.currency + taxInfo.state_tax,
+            },
+            {
+              title: "Total Deduction",
+              value: taxInfo.currency + taxInfo.deduction,
+            },
+            {
+              title: "Net Income",
+              value: taxInfo.currency + taxInfo.net_income,
+            },
+          ]);
         }
 
         setErrorMessage("");
@@ -445,6 +508,7 @@ const TaxCalculator = () => {
     );
   };
 
+  //Scroll into view on when tax results show up
   useEffect(() => {
     if (refResults.current) refResults.current.scrollIntoView();
   }, [taxResults]);
@@ -525,7 +589,8 @@ const TaxCalculator = () => {
         <FormGroup>
           {(country.country === "Ireland" ||
             country.country === "France" ||
-            country.country === "Hong Kong") && (
+            country.country === "Hong Kong" ||
+            country.country === "America") && (
             <Combobox
               ref={refFilingStatus}
               size="large"
@@ -554,6 +619,22 @@ const TaxCalculator = () => {
                 onChange={(e) => setSelectedNoOfChilds(e.target.value)}
               />
             )}
+        </FormGroup>
+      </FormWrapper>
+      <FormWrapper>
+        <FormGroup>
+          {(country.country === "Canada" || country.country === "America") && (
+            <Combobox
+              ref={refProvincesOrStates}
+              size="large"
+              label={country.country === "Canada" ? "Provinces" : "State"}
+              placeholder={`Select ${
+                country.country === "Canada" ? "Provinces" : "State"
+              }`}
+              items={country.provinces_or_states}
+              onChange={(e) => setSelectedProvinceOrState(e.target.value)}
+            />
+          )}
         </FormGroup>
       </FormWrapper>
       <FormWrapper>
