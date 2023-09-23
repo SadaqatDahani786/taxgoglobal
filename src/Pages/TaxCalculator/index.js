@@ -488,6 +488,18 @@ const TaxCalculator = () => {
               value: taxInfo.currency + taxInfo.state_tax,
             },
             {
+              title: "Social Security",
+              value: taxInfo.currency + taxInfo.social_security,
+            },
+            {
+              title: "Medicare",
+              value: taxInfo.currency + taxInfo.medicare,
+            },
+            {
+              title: "Federal Insurance Contribution Act (FICA)",
+              value: taxInfo.currency + taxInfo.fica,
+            },
+            {
               title: "Total Deduction",
               value: taxInfo.currency + taxInfo.deduction,
             },
